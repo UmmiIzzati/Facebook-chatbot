@@ -41,7 +41,7 @@ let postWebhook = (req, res) =>{
 
 let getWebhook = (req, res) => {
     // Your verify token. Should be a random string.
-    let VERIFY_TOKEN =
+    let VERIFY_TOKEN = process.env.MY_VERIFY_FB_TOKEN;
 
     // Parse the query params
     let mode = req.query['hub.mode'];
@@ -49,7 +49,7 @@ let getWebhook = (req, res) => {
     let challenge = req.query['hub.challenge'];
 
     // Checks if a token and mode is in the query string of the request
-    if (mode && token) {process.env.MY_VERIFY_FB_TOKEN;
+    if (mode && token) {
 
         // Checks the mode and token sent is correct
         if (mode === 'subscribe' && token === VERIFY_TOKEN) {
