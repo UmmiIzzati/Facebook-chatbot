@@ -139,12 +139,12 @@ function callSendAPI(sender_psid, response) {
     "recipient": {
       "id": sender_psid
     },
-    "message": response
+    "message":{"text": response }
   };
 
   // Send the HTTP request to the Messenger Platform
   request({
-    "uri": "https://graph.facebook.com/v6.0/me/messages",
+    "uri": "https://graph.facebook.com/v7.0/me/messages",
     "qs": { "access_token": process.env.FB_PAGE_TOKEN },
     "method": "POST",
     "json": request_body
@@ -163,14 +163,34 @@ function firstTrait(nlp, name) {
 }
 
 function handleMessage(sender_psid, message) {
-  // check greeting is here and is confident
-  const greeting = firstEntity(message.nlp, 'greetings');
-  if (greeting && greeting.confidence > 0.8) {
-    callSendAPI(sender_psid, 'Hi there!');
-  } else { 
-    // default logic
-    callSendAPI(sender_psid, 'default');
-  }
+    
+
+    let entitiesArr = [ "wit$greetings", "wit$thanks", "wit$bye" ];
+    let entityChosen = "";
+    entitiesArr.forEach((name) => {
+        let entity = firstTrait(message.nlp, name);
+        if (entity && entity.confidence > 0.8) {
+            entityChosen = name;
+        }
+    });
+
+    if(entityChosen === ""){
+        //default
+        callSendAPI(sender_psid,`The bot is needed more training, try to say "thanks a lot" or "hi" to the bot` );
+    }else{
+       if(entityChosen === "wit$greetings"){
+           //send greetings message
+           callSendAPI(sender_psid,'Hi there! This bot is created by Ummi.');
+       }
+       if(entityChosen === "wit$thanks"){
+           //send thanks message
+           callSendAPI(sender_psid,`You 're welcome!`);
+       }
+        if(entityChosen === "wit$bye"){
+            //send bye message
+            callSendAPI(sender_psid,'bye-bye!');
+        }
+    }
 }
 
 module.exports = {
