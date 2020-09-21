@@ -176,7 +176,7 @@ function handleMessage(sender_psid, message) {
 
     if(entityChosen === ""){
         //default
-        callSendAPI(sender_psid,`The bot is needed more training, try to say "thanks a lot" or "hi" to the bot` );
+        callSendAPI(sender_psid,'The bot is needed more training, try to say "thanks a lot" or "hi" to the bot' );
     }else{
        if(entityChosen === "greetings"){
            //send greetings message
@@ -184,7 +184,7 @@ function handleMessage(sender_psid, message) {
        }
        if(entityChosen === "thanks"){
            //send thanks message
-           callSendAPI(sender_psid,`You 're welcome!`);
+           callSendAPI(sender_psid,'Youre welcome!');
        }
         if(entityChosen === "bye"){
             //send bye message
