@@ -79,34 +79,34 @@ function handleMessage(sender_psid, received_message) {
 //     } else if (received_message.attachments) {
 
 //     // Gets the URL of the message attachment
-//     let attachment_url = received_message.attachments[0].payload.url;
-//         response = {
-//             "attachment": {
-//                 "type": "template",
-//                 "payload": {
-//                     "template_type": "generic",
-//                     "elements": [{
-//                         "title": "Is this the right picture?",
-//                         "subtitle": "Tap a button to answer.",
-//                         "image_url": attachment_url,
-//                         "buttons": [
-//                             {
-//                                 "type": "postback",
-//                                 "title": "Yes!",
-//                                 "payload": "yes",
-//                             },
-//                             {
-//                                 "type": "postback",
-//                                 "title": "No!",
-//                                 "payload": "no",
-//                             }
-//                         ],
-//                     }]
-//                 }
-//             }
-//         }
+    // let attachment_url = received_message.attachments[0].payload.url;
+    //     response = {
+    //         "attachment": {
+    //             "type": "template",
+    //             "payload": {
+    //                 "template_type": "generic",
+    //                 "elements": [{
+    //                     "title": "Is this the right picture?",
+    //                     "subtitle": "Tap a button to answer.",
+    //                     "image_url": attachment_url,
+    //                     "buttons": [
+    //                         {
+    //                             "type": "postback",
+    //                             "title": "Yes!",
+    //                             "payload": "yes",
+    //                         },
+    //                         {
+    //                             "type": "postback",
+    //                             "title": "No!",
+    //                             "payload": "no",
+    //                         }
+    //                     ],
+    //                 }]
+    //             }
+    //         }
+    //     }
 
-// }
+}
 
 // Sends the response message
     callSendAPI(sender_psid, response);
@@ -136,18 +136,19 @@ function callSendAPI(sender_psid, response) {
         "recipient": {
             "id": sender_psid
         },
-        "message": { "text": response }
+        "message": response
     };
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v7.0/me/messages",
+        "uri": "https://graph.facebook.com/v6.0/me/messages",
         "qs": { "access_token": process.env.FB_PAGE_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
         if (!err) {
             console.log('message sent!');
+            console.log('My message: ${response}');
         } else {
             console.error("Unable to send message:" + err);
         }
